@@ -40,13 +40,16 @@ function App() {
 }
 
 function ToDoItem({todo, index, setComplete, removeTodo}){
-
+  const [isEdit, setEdit] = useState(false)
   return (
-    <div style ={{textDecoration: todo.completed ? 'line-through': ''}}>
-      {index}{' '}
-      {todo.text}
-      <button onClick={() => {setComplete(index)}}>Completed</button>
-      <button onClick={() => {removeTodo(index)}}>Remove</button>
+    <div>
+      {isEdit === false ? <div style ={{textDecoration: todo.completed ? 'line-through': ''}}>
+        {index}{' '}
+        {todo.text}
+        <button onClick={() => {setComplete(index)}}>Completed</button>
+        <button onClick={() => {removeTodo(index)}}>Remove</button> 
+        <button onClick={() => {setEdit(true)}}>Edit</button>
+      </div> :  <div><input type = 'text' placeholder = {todo.text}></input><button onClick={() => setEdit(false)}>Finish</button></div>}
     </div>
   )
 }
