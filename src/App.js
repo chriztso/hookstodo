@@ -9,10 +9,11 @@ function App() {
   const [id, setId] = useState(0)
 
   const handleSubmit = () => {
-    setTodos([...todos, {'text': todo, 'id': id}]); 
+    setTodos([...todos, {'text': todo, 'id': id, 'completed': false}]); 
     setTodo('');
     setId(id+1);
   }
+
   return (
     <div>
       Count: {count}
@@ -20,16 +21,18 @@ function App() {
       <div>
         <input type = 'text' onChange={event => setTodo(event.target.value)}></input>
         <input type = 'submit' onClick={handleSubmit}></input>
-        {todos.length > 0 ? todos.map(todo => <ToDoItem todo={todo}/>) : null}
+        {todos.length > 0 ? todos.map((todo, index) => <ToDoItem todo={todo} index={index}/>) : null}
       </div>
     </div>
   );
 }
 
-function ToDoItem({todo}){
+function ToDoItem({todo, index}){
   return (
     <div>
+      {index}{' '}
       {todo.text}
+      <button>Completed</button>
     </div>
   )
 }
