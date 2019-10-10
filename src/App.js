@@ -25,7 +25,12 @@ function App() {
     newTodos.splice(index, 1); 
     setTodos(newTodos)
   }
-
+  
+  const updateTodo = (index, text) => {
+    let newTodos = [...todos]; 
+    newTodos[index].text = text; 
+    setTodos(newTodos)
+  }
   return (
     <div>
       Count: {count}
@@ -33,14 +38,21 @@ function App() {
       <div>
         <input type = 'text' onChange={event => setTodo(event.target.value)}></input>
         <input type = 'submit' onClick={handleSubmit}></input>
-        {todos.length > 0 ? todos.map((todo, index) => <ToDoItem todo={todo} index={index} setComplete={setComplete} removeTodo={removeTodo}/>) : null}
+        {todos.length > 0 ? todos.map((todo, index) => <ToDoItem todo={todo} index={index} setComplete={setComplete} removeTodo={removeTodo} updateTodo={updateTodo}/>) : null}
       </div>
     </div>
   );
 }
 
-function ToDoItem({todo, index, setComplete, removeTodo}){
+function ToDoItem({todo, index, setComplete, removeTodo, updateTodo}){
   const [isEdit, setEdit] = useState(false)
+  const [input, setInput] = useState('')
+
+  const handleSubmit = (index, text) => {
+    updateTodo(index, text); 
+    setInput('')
+    setEdit(false)
+  }
   return (
     <div>
       {isEdit === false ? <div style ={{textDecoration: todo.completed ? 'line-through': ''}}>
@@ -49,7 +61,7 @@ function ToDoItem({todo, index, setComplete, removeTodo}){
         <button onClick={() => {setComplete(index)}}>Completed</button>
         <button onClick={() => {removeTodo(index)}}>Remove</button> 
         <button onClick={() => {setEdit(true)}}>Edit</button>
-      </div> :  <div><input type = 'text' placeholder = {todo.text}></input><button onClick={() => setEdit(false)}>Finish</button></div>}
+      </div> :  <div><input type = 'text' placeholder = {todo.text} onChange={(event) => {setInput(event.target.value)}}></input><button onClick={() => handleSubmit(index, input)}>Finish</button></div>}
     </div>
   )
 }
