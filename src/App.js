@@ -14,6 +14,12 @@ function App() {
     setId(id+1);
   }
 
+  const setComplete = (index) => {
+    let newTodos = [...todos]; 
+    newTodos[index].completed = true;
+    setTodos(newTodos)
+  }
+
   return (
     <div>
       Count: {count}
@@ -21,18 +27,18 @@ function App() {
       <div>
         <input type = 'text' onChange={event => setTodo(event.target.value)}></input>
         <input type = 'submit' onClick={handleSubmit}></input>
-        {todos.length > 0 ? todos.map((todo, index) => <ToDoItem todo={todo} index={index}/>) : null}
+        {todos.length > 0 ? todos.map((todo, index) => <ToDoItem todo={todo} index={index} setComplete={setComplete}/>) : null}
       </div>
     </div>
   );
 }
 
-function ToDoItem({todo, index}){
+function ToDoItem({todo, index, setComplete}){
   return (
-    <div>
+    <div style ={{textDecoration: todo.completed ? 'line-through': ''}}>
       {index}{' '}
       {todo.text}
-      <button>Completed</button>
+      <button onClick={() => {setComplete(index)}}>Completed</button>
     </div>
   )
 }
