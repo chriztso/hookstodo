@@ -20,6 +20,12 @@ function App() {
     setTodos(newTodos)
   }
 
+  const removeTodo = (index) => {
+    let newTodos = [...todos]; 
+    newTodos.splice(index, 1); 
+    setTodos(newTodos)
+  }
+
   return (
     <div>
       Count: {count}
@@ -27,18 +33,20 @@ function App() {
       <div>
         <input type = 'text' onChange={event => setTodo(event.target.value)}></input>
         <input type = 'submit' onClick={handleSubmit}></input>
-        {todos.length > 0 ? todos.map((todo, index) => <ToDoItem todo={todo} index={index} setComplete={setComplete}/>) : null}
+        {todos.length > 0 ? todos.map((todo, index) => <ToDoItem todo={todo} index={index} setComplete={setComplete} removeTodo={removeTodo}/>) : null}
       </div>
     </div>
   );
 }
 
-function ToDoItem({todo, index, setComplete}){
+function ToDoItem({todo, index, setComplete, removeTodo}){
+
   return (
     <div style ={{textDecoration: todo.completed ? 'line-through': ''}}>
       {index}{' '}
       {todo.text}
       <button onClick={() => {setComplete(index)}}>Completed</button>
+      <button onClick={() => {removeTodo(index)}}>Remove</button>
     </div>
   )
 }
