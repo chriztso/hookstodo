@@ -7,10 +7,13 @@ function App() {
   const [todos, setTodos] = useState([])
   const [todo, setTodo] = useState('')
   const [id, setId] = useState(0)
+  const [completed, setCompleted] = useState(0); 
+  const [pending, setPending] = useState(0)
 
   const handleSubmit = () => {
     setTodos([...todos, {'text': todo, 'id': id, 'completed': false}]); 
     setTodo('');
+    setPending(pending+1)
     setId(id+1);
   }
 
@@ -18,11 +21,20 @@ function App() {
     let newTodos = [...todos]; 
     newTodos[index].completed = true;
     setTodos(newTodos)
+    setPending(pending-1)
+    setCompleted(completed+1)
   }
 
   const removeTodo = (index) => {
     let newTodos = [...todos]; 
-    newTodos.splice(index, 1); 
+    let todo = newTodos.splice(index, 1); 
+    console.log(todo)
+    if(todo[0]['completed'] === false){
+      setPending(pending-1)
+    } 
+    if(todo[0]['completed'] === true) {
+      setCompleted(completed-1)
+    }
     setTodos(newTodos)
   }
   
@@ -35,6 +47,12 @@ function App() {
     <div>
       Count: {count}
       <button onClick={() => {setCount(count+1)}} value = 'Increment'>Increment</button>
+      <div>
+        Completed Tasks: {completed}
+      </div>
+      <div>
+        Pending Tasks: {pending}
+      </div>
       <div>
         <input type = 'text' onChange={event => setTodo(event.target.value)}></input>
         <input type = 'submit' onClick={handleSubmit}></input>
